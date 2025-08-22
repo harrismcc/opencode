@@ -268,7 +268,7 @@ func (m *modelDialog) buildDisplayList(query string) []list.Item {
 		// Search mode: use fuzzy matching
 		return m.buildSearchResults(query)
 	} else {
-		// Grouped mode: show Recent section and provider groups
+		// Grouped mode: show Pinned, Recent section and provider groups
 		return m.buildGroupedResults()
 	}
 }
@@ -314,9 +314,18 @@ func (m *modelDialog) buildSearchResults(query string) []list.Item {
 	return items
 }
 
-// buildGroupedResults creates a grouped list with Recent section and provider groups
+// buildGroupedResults creates a grouped list with Pinned, Recent section and provider groups
 func (m *modelDialog) buildGroupedResults() []list.Item {
 	var items []list.Item
+
+	// Add Pinned section
+	pinnedModels := m.getPinnedModels()
+	if len(pinnedModels) > 0 {
+		items = append(items, list.HeaderItem("Pinned"))
+		for _, model := range pinnedModels {
+			items = append(items, modelItem{model: model})
+		}
+	}
 
 	// Add Recent section
 	recentModels := m.getRecentModels(maxRecentModels)
@@ -386,6 +395,16 @@ func (m *modelDialog) buildGroupedResults() []list.Item {
 	}
 
 	return items
+}
+
+func (m *modelDialog) getPinnedModels() []ModelWithProvider {
+	var pinned []ModelWithProvider
+	for _, model := range m.allModels {
+		if model.Model.Pinned {
+			pinned = append(pinned, model)
+		}
+	}
+	return pinned
 }
 
 // getRecentModels returns the most recently used models

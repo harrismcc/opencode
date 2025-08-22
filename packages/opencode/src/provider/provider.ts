@@ -228,6 +228,7 @@ export namespace Provider {
               context: 0,
               output: 0,
             },
+          pinned: model.pinned ?? false,
         }
         parsed.models[modelID] = parsedModel
       }

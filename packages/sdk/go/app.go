@@ -306,6 +306,7 @@ type Model struct {
 	ReleaseDate string                 `json:"release_date,required"`
 	Temperature bool                   `json:"temperature,required"`
 	ToolCall    bool                   `json:"tool_call,required"`
+	Pinned      bool                   `json:"pinned"`
 	JSON        modelJSON              `json:"-"`
 }
 
@@ -321,6 +322,7 @@ type modelJSON struct {
 	ReleaseDate apijson.Field
 	Temperature apijson.Field
 	ToolCall    apijson.Field
+	Pinned      apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
